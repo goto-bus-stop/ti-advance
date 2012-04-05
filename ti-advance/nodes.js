@@ -129,6 +129,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     
     initialize: function List(name) {
       this.name = name.toUpperCase();
+      console.log(this, List);
       if(!List.map[this.name]) {
         var use = (List.use++).toString(36).toUpperCase();
         List.map[this.name] = 'ARR' + use;
