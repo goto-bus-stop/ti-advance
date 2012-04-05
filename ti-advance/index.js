@@ -1,4 +1,6 @@
 define(function(require) {
+  require('./extensions');
+  
   var lang = {};
   Object.merge(lang, {
     Lexer: require('./lexer'),
