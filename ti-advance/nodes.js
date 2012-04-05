@@ -105,7 +105,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     
     code: [],
     
-    initialize: function Line(a) {
+    initialize: function initialize(a) {
       this.code = typeOf(a) == 'array' ? a : Array.from(arguments);
     },
     
@@ -127,7 +127,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     
     name: null,
     
-    initialize: function List(name) {
+    initialize: function initialize(name) {
       this.name = name.toUpperCase();
       if(!List.map[this.name]) {
         var use = (List.use++).toString(36).toUpperCase();
@@ -163,7 +163,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     type: 'number',
     amount: 1,
     
-    initialize: function Variable(name) {
+    initialize: function initialize(name) {
       this.name = name.toLowerCase();
       if(!Variable.list[this.name]) {
         return Variable.list[this.name] = this;
@@ -224,7 +224,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     // set to original value if this is simplified
     original: false,
     
-    initialize: function Value(value) {
+    initialize: function initialize(value) {
       this.value = value || 0;
     },
     
@@ -259,7 +259,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     
     values: [],
     
-    initialize: function Commas(values) {
+    initialize: function initialize(values) {
       this.values = Array.from(values);
     },
     
@@ -280,7 +280,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     inclusive: true,
     array: false,
     
-    initialize: function Range(start, end, step, inclusive, standAlone) {
+    initialize: function initialize(start, end, step, inclusive, standAlone) {
       this.start = start;
       this.end = end;
       this.step = step;
@@ -369,7 +369,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     value: null,
     type: '',
     
-    initialize: function Assign(variable, type, value) {
+    initialize: function initialize(variable, type, value) {
       this.variable = variable;
       this.value = value;
       this.type = type;
@@ -410,7 +410,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     list: null,
     entry: null,
     
-    initialize: function Access(list, entry) {
+    initialize: function initialize(list, entry) {
       this.list = list;
       this.entry = entry;
     },
@@ -430,7 +430,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     
     rules: [],
     
-    initialize: function Block(rules) {
+    initialize: function initialize(rules) {
       this.rules = Array.from(arguments.length > 1 ? arguments : rules);
     },
     
@@ -464,7 +464,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     op: '',
     makeSimple: true,
     
-    initialize: function Op(value1, op, value2, makeSimple) {
+    initialize: function initialize(value1, op, value2, makeSimple) {
       this.value1 = value1 || new Value(); // allow +10 and -10 as standalone values, for now compile unoptimized to `0-10` etc.
       this.value2 = value2;
       this.op = op;
@@ -568,7 +568,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     code: null,
     ifFalse: null,
     
-    initialize: function If(condition, code, ifFalse) {
+    initialize: function initialize(condition, code, ifFalse) {
       this.condition = condition;
       this.code = code;
       this.ifFalse = ifFalse ? ifFalse : false;
@@ -625,7 +625,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     list: null,
     code: null,
     
-    initialize: function For(variable, list, code) {
+    initialize: function initialize(variable, list, code) {
       this.variable = variable;
       this.list = list;
       this.code = code;
@@ -674,7 +674,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     code: null,
     type: 'While',
     
-    initialize: function While(condition, code, until) {
+    initialize: function initialize(condition, code, until) {
       this.condition = condition;
       this.code = code;
       if(until) {
@@ -694,7 +694,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     
     $node: 'Compare',
     
-    initialize: function Compare(value1, type, value2, makeSimple) {
+    initialize: function initialize(value1, type, value2, makeSimple) {
       this.value1 = value1;
       this.value2 = value2;
       this.type = type;
@@ -782,7 +782,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     name: '',
     params: [],
     
-    initialize: function Call(name, params) {
+    initialize: function initialize(name, params) {
       this.name = name.toLowerCase();
       this.params = Array.from(params);
     },
@@ -833,7 +833,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     
     code: '',
     
-    initialize: function Native(code) {
+    initialize: function initialize(code) {
       this.code = code;
     },
     
@@ -853,7 +853,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     value: null,
     list: null,
     
-    initialize: function In(value, list) {
+    initialize: function initialize(value, list) {
       this.value = value;
       this.list = list;
     },
@@ -888,7 +888,7 @@ define(['./function_list'], function(FUNCTION_LIST) {
     code: null,
     id: 0,
     
-    initialize: function FnDef(name, params, code) {
+    initialize: function initialize(name, params, code) {
       this.name = name;
       this.params = params;
       this.code = code;
@@ -909,8 +909,6 @@ define(['./function_list'], function(FUNCTION_LIST) {
   // list of parameter lists
   FnDef.paramMap;
   FnDef.count;
-  
-  init();
   
   var nodes = {
     Block: Block,
