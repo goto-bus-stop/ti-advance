@@ -190,7 +190,7 @@ define(function() {
       // save as += or -=es
       if('++ --'.contains(two, ' ')) {
         this.token('C_ASSIGN', two.charAt(0) + '=')
-        this.token('NUMBER', 1);
+        this.token('NUMBER', '1');
         // return 2 anyway, as that's how many chars we actually read
         return 2;
       }
