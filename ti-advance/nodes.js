@@ -910,8 +910,6 @@ define(['./function_list'], function(FUNCTION_LIST) {
   FnDef.paramMap;
   FnDef.count;
   
-  init();
-  
   var nodes = {
     Block: Block,
     Line: Line,
