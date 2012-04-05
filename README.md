@@ -47,8 +47,9 @@ And *ranges*:
     {0,5,10,15,20,25,30,35→∟ARR1
     {0,5,10,15,20,25,30→∟ARR2
 
-Arrays are enclosed in `[` `]`, not `{` `}`. They can not (yet??) be nested, and may only contain numbers.
-Which can be used nicely in *for loops*: (a bit like Coffeescript)
+Arrays are enclosed in `[` `]`, not `{` `}`. They cannot (yet??) be nested, and may only contain numbers.
+
+Ranges can be used perfectly in *for loops*: (a bit like Coffeescript)
 
     for i in [0 to 100] {
       print i;
@@ -109,6 +110,7 @@ Oh! And these can be easily *negated* as well:
     End
 
 As can a *while* loop:
+
     while a {
       a--;
     }
@@ -201,5 +203,6 @@ And a sort-of *foreach* loop!
 IMPORTANT(?) NOTE
 =================
 
-This is under heavy development. Nothing works, but some things act like they do. No code optimization has been done. Some parts are over-commented, while others lack comments at all.
-Very few areas of the language are covered so far. The compiler is **extremely** buggy. Please, do not rely on anything in here.
+This is under heavy development. Nothing works, but some things act like they do. No code optimization has been done. Some parts are over-commented, while others lack comments at all.  
+Very few areas of the language are covered so far. The compiler is **extremely** buggy. Please, do not rely on anything in here.  
+It also does not throw sensible errors, if at all.
