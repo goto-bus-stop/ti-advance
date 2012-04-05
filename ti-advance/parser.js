@@ -1,4 +1,4 @@
-define(['./function_list', './nodes', './targets/advance'], function (FUNCTION_LIST, basicNodes, advanceNodes) {
+define(['./function_list', './nodes'], function (FUNCTION_LIST, nodes) {
   "use strict";
 
   // utils
@@ -718,12 +718,6 @@ define(['./function_list', './nodes', './targets/advance'], function (FUNCTION_L
     
     parse: function parse(tokens) {
       this.tokens = tokens;
-      
-      // nodes to use
-      var nodes = basicNodes;
-      if(this.options.target === 'advance') {
-        nodes = advanceNodes;
-      }
       
       // reset nodes
       nodes.init();
