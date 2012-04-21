@@ -92,6 +92,8 @@ define(['./function_list'], function(FUNCTION_LIST) {
     
     isSimple: Function.from(false),
     
+    unwrap: function unwrap() { return this; },
+    
     simplify: function simplify() { return this; },
     
     toString: function toString() { return this.compile(); }
@@ -442,6 +444,13 @@ define(['./function_list'], function(FUNCTION_LIST) {
       return this.rules.length;
     },
     
+    unwrap: function unwrap() {
+      if(this.rules.length === 1 && this.rules[0].$node === 'Block') {
+        return this.rules[0].unwrap();
+      }
+      return this;
+    },
+    
     compile: function compile(useModern) {
       var rules = this.rules.map(function(rule) {
         if(!rule) { return new Value() }
@@ -598,13 +607,14 @@ define(['./function_list'], function(FUNCTION_LIST) {
         }
       }
       
-      var ti = 'If ' + this.condition.compile(useModern), needsEnd = !!this.ifFalse;
-      if(instanceOf(this.code, Block) && this.code.getLength() > 1 || this.ifFalse) {
-        ti += ':Then\n' + this.code.compile(useModern);
+      var ti = 'If ' + this.condition.compile(useModern), needsEnd = !!this.ifFalse,
+        code = this.code.unwrap();
+      if(code.$node === 'Block' && code.getLength() > 1 || this.ifFalse) {
+        ti += ':Then\n' + code.compile(useModern);
         needsEnd = true;
       }
       else {
-        ti += '\n' + this.code.compile(useModern);
+        ti += '\n' + code.compile(useModern);
       }
       if(this.ifFalse) {
         ti += '\nElse\n' + this.ifFalse.compile(useModern);
