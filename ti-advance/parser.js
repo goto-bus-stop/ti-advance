@@ -107,12 +107,16 @@ define(['./function_list', './nodes'], function (FUNCTION_LIST, nodes) {
   }
   
   function do_parse(opts, tokens, n) {
+    var blocks = {};
+    
     // a block of code enclosed in `{` `}`
     function Block(tokens, pos, isTopLevel) {
       // all the lines
       var lines = [0],
       // last token of the block
-        last;
+        last,
+      // original token stream
+        start = tokens.clone();
       
       // if this 'block' has block characters around it, remove them
       if (tokens[0][0] === 'BLOCK_OPEN' && tokens.getLast()[0] === 'BLOCK_CLOSE') {
@@ -129,15 +133,23 @@ define(['./function_list', './nodes'], function (FUNCTION_LIST, nodes) {
         tokens.push(['TERMINATOR', ';', last[2]]);
       }
       
-      // seperate lines
+      // seperate lines & blocks
       tokens.each(function (token, pos) {
-        if (token[0] === 'TERMINATOR') {
+        if(token[0] === 'BLOCK_OPEN') {
+          var closer = pos + getClosing(tokens.slice(pos)) + 1, id = String.uniqueID();
+          blocks[id] = tokens.slice(pos, closer);
+          tokens.splice(pos + 1, closer - pos - 2, token = ['BLOCK_REF', id], ['TERMINATOR', ';']);
+        }
+        if (token[0] === 'TERMINATOR' || token[0] === 'BLOCK_CLOSE' && tokens[pos + 1] && tokens[pos + 1][0]  !== 'TERMINATOR') {
           lines.push(pos + 1);
         }
       });
       
       // create block containing all the lines, cleaned from empty ones
-      return new n.Block(lines.map(function (pos) { return Line(tokens, pos); }).clean());
+      var block = new n.Block(lines.map(function (pos) { return Line(tokens, pos); }).clean());
+      // save length, for skipping things...
+      block.length = start.length;
+      return block;
     }
     
     // a line of code
@@ -150,6 +162,8 @@ define(['./function_list', './nodes'], function (FUNCTION_LIST, nodes) {
       // we start with a keyword, do things
       case 'KEYWORD':
         return KeyWordThing(line, 0);
+      case 'BLOCK_REF':
+        return Block(blocks[line[0][1]]);
       case 'BLOCK_OPEN':
       // a block can start everywhere
         var blockClose = getClosing(line);
@@ -251,7 +265,9 @@ define(['./function_list', './nodes'], function (FUNCTION_LIST, nodes) {
         ifFalse = Else(next);
       }
       
-      return new n.If(condition, Block(block), ifFalse);
+      block = Block(block);
+      
+      return new n.If(condition, block, ifFalse);
     }
     
     // an else part
@@ -653,7 +669,7 @@ define(['./function_list', './nodes'], function (FUNCTION_LIST, nodes) {
         }
         var ln = arg[0][2],
           expr = Assign(arg);
-        console.log(ln, arg.clone(), expr);
+        //console.log(ln, arg.clone(), expr);
         if(expr.$node == 'Assign') {
           if(expr.type != '=') {
             err('invalid default param');
@@ -724,6 +740,8 @@ define(['./function_list', './nodes'], function (FUNCTION_LIST, nodes) {
       
       // parse stuff
       this.ast = do_parse(this.options, tokens, nodes);
+      
+      console.log(this.ast);
       
       return this;
     },
