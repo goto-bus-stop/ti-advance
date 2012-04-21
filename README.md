@@ -4,6 +4,8 @@ TI+Advance
 TI+Advance is a tiny language that compiles down to TI-Basic. It has some nice higher-level structures and other useful utilities.
 It's nowhere near done, (for example, it's impossible to use anything more than one control structure per block), but it's a work in progress.
 
+The name is a lame negation of TI-Basic, obviously.
+
 In development for an informatics class project.
 
 What we have
